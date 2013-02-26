@@ -1,6 +1,5 @@
 package com.logicfishsoftware.cloudlet.config;
 
-import lombok.Data;
 
 
 public class DummyPropogator implements IConfigurationPropogator {

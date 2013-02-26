@@ -12,6 +12,9 @@ public class ConfigurationTest
 {
 	
 	static {
+		// Reference this class to ensure that it gets initialised - imported strings are
+		// inlined by the compiler, and don't introduce a dependency, so we must reference
+		// the class explicitly.
 		DummyPropogator.getDefault();
 	}
 	IConfigurationPoint configurationPoint = ConfigurationPoints.getDefault().findConfigurationPoint(DummyPropogator.DUMMY_POINT);
