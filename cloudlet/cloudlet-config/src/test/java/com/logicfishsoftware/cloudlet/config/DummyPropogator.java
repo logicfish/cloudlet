@@ -1,5 +1,8 @@
 package com.logicfishsoftware.cloudlet.config;
 
+import com.logicfishsoftware.cloudlet.config.util.Configuration;
+import com.logicfishsoftware.cloudlet.config.util.ConfigurationReadOnly;
+
 
 
 public class DummyPropogator implements IConfigurationPropogator {
@@ -13,12 +16,6 @@ public class DummyPropogator implements IConfigurationPropogator {
 	public static final String DUMMY_SETTING = "Dummy Setting";
 	public static final String DUMMY_READONLY_SETTING = "Dummy Read Only Setting";
 	public static final String DUMMY_SETTING2 = "Dummy Setting 2";
-
-	private static final DummyPropogator _DUMMY_PROPOGATOR = new DummyPropogator();
-	
-	static { 
-		ConfigurationPropogation.getDefault().register(getDefault());
-	}
 
 	private IConfiguration<String> dummyConfig = new Configuration<String>(String.class,DUMMY_SETTING);
 	private IConfiguration<String> dummyReadOnlyConfig = new ConfigurationReadOnly<String>(String.class,DUMMY_READONLY_SETTING);
@@ -38,14 +35,6 @@ public class DummyPropogator implements IConfigurationPropogator {
 
 		
 	};
-
-	// The actual settings storage, using fields as our dummy storage pattern
-	
-	private DummyPropogator() {
-		if(_DUMMY_PROPOGATOR!=null) {
-			throw new RuntimeException("Singleton object was initialised twice.");
-		}
-	}
 	
 	public void populateSegment(IConfigurationSegment segment) throws ConfigurationException {
 		if(!DUMMY_POINT.equals(segment.getSegmentName())) {
@@ -56,8 +45,4 @@ public class DummyPropogator implements IConfigurationPropogator {
 		segment.registerConfig(DUMMY_CONFIG2, dummyConfig2);
 	}
 	
-	public static DummyPropogator getDefault() {
-		return _DUMMY_PROPOGATOR;
-	}
-
 }

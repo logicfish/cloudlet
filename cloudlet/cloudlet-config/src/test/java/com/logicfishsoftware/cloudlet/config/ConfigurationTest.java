@@ -1,5 +1,7 @@
 package com.logicfishsoftware.cloudlet.config;
 
+import com.logicfishsoftware.cloudlet.config.tool.Configurations;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -11,14 +13,18 @@ public class ConfigurationTest
     extends TestCase
 {
 	
-	static {
-		// Reference this class to ensure that it gets initialised - imported strings are
-		// inlined by the compiler, and don't introduce a dependency, so we must reference
-		// the class explicitly.
-		DummyPropogator.getDefault();
-	}
-	IConfigurationPoint configurationPoint = ConfigurationPoints.getDefault().findConfigurationPoint(DummyPropogator.DUMMY_POINT);
+	IConfigurationPoint configurationPoint = Configurations.findConfigurationPoint(DummyPropogator.DUMMY_POINT);
+	private IConfigurationPropogator propogator = new DummyPropogator();
 
+	@Override
+	protected void setUp() throws Exception {
+		Configurations.registerPropogationHandler(propogator);
+	}
+	
+	@Override
+	protected void tearDown() throws Exception {
+		Configurations.unregisterPropogationHandler(propogator);
+	}
 	/**
      * Create the test case
      *
@@ -54,6 +60,8 @@ public class ConfigurationTest
     	    	
     }
     public void testReadOnlySetting() throws Exception {
+    	assertNotNull(configurationPoint);
+
     	String string = configurationPoint.querySetting(DummyPropogator.DUMMY_CONFIG_READONLY);
     	assertEquals(string,DummyPropogator.DUMMY_READONLY_SETTING);
 
@@ -70,7 +78,15 @@ public class ConfigurationTest
     		configurationPoint.updateSetting(DummyPropogator.DUMMY_CONFIG2, 1);
     		fail("Expected exception.");
     	} catch (ConfigurationException e) {
-    		e.printStackTrace();
     	}		
 	}
+    
+    public void testConfigurationNotPresent() throws Exception {
+    	try {
+    		configurationPoint.querySetting("A random String");
+    		fail("Expected exception.");
+    	} catch(ConfigurationNotPresentException e) {
+    	}
+	}
+
 }
