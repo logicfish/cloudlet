@@ -7,7 +7,7 @@ import com.logicfishsoftware.cloudlet.config.ConfigurationException;
 import com.logicfishsoftware.cloudlet.config.IConfiguration;
 import com.logicfishsoftware.cloudlet.config.IConfigurationPropogator;
 import com.logicfishsoftware.cloudlet.config.IConfigurationSegment;
-import com.logicfishsoftware.cloudlet.config.IncompatibleConfigurationTypesException;
+import com.logicfishsoftware.cloudlet.config.ConfigurationIncompatibleTypesException;
 import com.logicfishsoftware.cloudlet.config.tool.ConfigurationUtil;
 
 public class MappedConfigurationPropogator implements IConfigurationPropogator {
@@ -30,14 +30,14 @@ public class MappedConfigurationPropogator implements IConfigurationPropogator {
 	
 	// Helpers
 	
-	public <T> IConfiguration<T> findConfiguration(String name,Class<T> type) throws IncompatibleConfigurationTypesException {
+	public <T> IConfiguration<T> findConfiguration(String name,Class<T> type) throws ConfigurationIncompatibleTypesException {
 		IConfiguration<?> configuration = configurations.get(name);
 		if(type!=null&&configuration!=null&& !configuration.getType().isAssignableFrom(type)) {
-			throw new IncompatibleConfigurationTypesException(configuration.getType(),type);
+			throw new ConfigurationIncompatibleTypesException(configuration.getType(),type);
 		}
 		return ConfigurationUtil.asType(configuration);
 	}
-	public <T> IConfiguration<T> findConfiguration(String name) throws IncompatibleConfigurationTypesException {
+	public <T> IConfiguration<T> findConfiguration(String name) throws ConfigurationIncompatibleTypesException {
 		return findConfiguration(name,null);
 	}
 	public void addConfiguration(String name,IConfiguration<?> configuration) {

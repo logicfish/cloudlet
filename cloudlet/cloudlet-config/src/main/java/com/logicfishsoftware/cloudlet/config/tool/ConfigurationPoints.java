@@ -4,7 +4,7 @@ import com.logicfishsoftware.cloudlet.config.ConfigurationException;
 import com.logicfishsoftware.cloudlet.config.ConfigurationNotPresentException;
 import com.logicfishsoftware.cloudlet.config.IConfiguration;
 import com.logicfishsoftware.cloudlet.config.IConfigurationPoint;
-import com.logicfishsoftware.cloudlet.config.IncompatibleConfigurationTypesException;
+import com.logicfishsoftware.cloudlet.config.ConfigurationIncompatibleTypesException;
 
 public final class ConfigurationPoints {
 	protected static IConfigurationPoint findConfigurationPoint(final String point) {
@@ -14,13 +14,13 @@ public final class ConfigurationPoints {
 				return ConfigurationPropogation.lookup(point).getConfiguration(name);
 			}
 			
-			private <T> void checkConfigType(IConfiguration<T> configuration,Class<T> type) throws IncompatibleConfigurationTypesException {
+			private <T> void checkConfigType(IConfiguration<T> configuration,Class<T> type) throws ConfigurationIncompatibleTypesException {
 				if(type==null||configuration==null) {
 					return;
 				}
 				Class<T> configurationType = configuration.getType();
 				if(!type.isAssignableFrom(configurationType)) {
-					throw new IncompatibleConfigurationTypesException(configurationType,type);
+					throw new ConfigurationIncompatibleTypesException(configurationType,type);
 				}				
 			}
 			
