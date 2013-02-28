@@ -34,14 +34,29 @@ public final class ConfigurationPropogation {
 			}
 
 			public <T> IConfiguration<T> getConfiguration(String name) {
-				return ConfigurationUtil.asType(configs.get(name));
+				if(configs.containsKey(name)) {
+					return ConfigurationUtil.asType(configs.get(name));
+				}
+				return unknownConfigurationHandler(this,name);
 			}
 		};
 	}
 	
 	// API Methods
 	
+	protected static <T> IConfiguration<T> unknownConfigurationHandler(
+			IConfigurationSegment iConfigurationSegment, String name) {
+		for (IConfigurationPropogator propogator : propogators) {
+			IConfiguration<?> configuration = propogator.unknownSegmentHandler(iConfigurationSegment,name);
+			if(configuration!=null) {
+				return ConfigurationUtil.asType(configuration);
+			}
+		}
+		return null;				
+	}
+
 	protected static void register(IConfigurationPropogator propogator) {
+		// TODO sort list by priority
 		propogators.add(propogator);
 	}
 	

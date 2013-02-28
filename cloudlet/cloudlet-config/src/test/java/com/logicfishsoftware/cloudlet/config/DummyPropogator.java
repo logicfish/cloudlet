@@ -44,5 +44,12 @@ public class DummyPropogator implements IConfigurationPropogator {
 		segment.registerConfig(DUMMY_CONFIG_READONLY, dummyReadOnlyConfig);
 		segment.registerConfig(DUMMY_CONFIG2, dummyConfig2);
 	}
+
+	@Override
+	public IConfiguration<?> unknownSegmentHandler(
+			IConfigurationSegment iConfigurationSegment, String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

@@ -1,6 +1,8 @@
 package com.logicfishsoftware.cloudlet.config;
 
 import com.logicfishsoftware.cloudlet.config.tool.Configurations;
+import com.logicfishsoftware.cloudlet.config.util.Configuration;
+import com.logicfishsoftware.cloudlet.config.util.SimpleConfigurationPropogator;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -87,6 +89,37 @@ public class ConfigurationTest
     		fail("Expected exception.");
     	} catch(ConfigurationNotPresentException e) {
     	}
+	}
+    
+    public void testUnkownSegmentHandler() throws Exception {
+    	final String testSetting = "Test Setting";
+    	// TODO this simplifies the test
+    	// or, move this test to a different case (confusion arises between the propogator
+    	// created inside this method and the one in the class).
+    	// this.propogator.setUnknownSegmentHandler(...);
+		SimpleConfigurationPropogator simplePropogator = new SimpleConfigurationPropogator("test.point",new SimpleConfigurationPropogator.UnknownConfigurationHandler() {
+			
+			private IConfiguration<String> configuration = new Configuration<String>(testSetting);
+
+			public IConfiguration<?> handleUnknownConfiguration(String point,
+					String name) {
+				return configuration;
+			}
+		});
+		String string = configurationPoint.querySetting("No setting");
+		assertSame(testSetting,string);
+		
+		IConfigurationPoint pointLocal = Configurations.findConfigurationPoint("No name");
+		string = pointLocal.querySetting("No setting again");
+		assertSame(testSetting,string);
+		
+		simplePropogator.unregister();
+		try {
+			string = pointLocal.querySetting("No setting again");
+    		fail("Expected exception.");
+    	} catch(ConfigurationNotPresentException e) {
+    	}
+		
 	}
 
 }
