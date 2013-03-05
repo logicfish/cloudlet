@@ -20,6 +20,8 @@ Applications can export an automatically generated Domain Specific Language allo
 and allows for code fragments to be transmitted as text over the network.  These may be signed and stored as hashes.
 
 Automatic discovery of application enhancements and extensions.  Applications re-configure and upgrade themselves using a scripted environment.
+Automatic integration of applications supporting common frameworks, for example REST-ful HTTP services and applications supporting SPARQL and RDF,
+by using meta-data descriptors.
 
 Extensible development environment allowing automatic integration of SDK kits, API's and connectors.
 Intelligent code generation from templates using an agent-based decision loop.
